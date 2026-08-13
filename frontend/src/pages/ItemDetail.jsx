@@ -43,10 +43,10 @@ export const ItemDetail = () => {
   }, [id]);
 
   const handleResolveStatus = async () => {
-    if (!window.confirm('Mark this item listing as RESOLVED?')) return;
+    if (!window.confirm('Mark this item listing as resolved?')) return;
     setActionLoading(true);
     try {
-      const res = await api.items.update(id, { status: 'RESOLVED' });
+      const res = await api.items.update(id, { status: 'resolved' });
       if (res.success) {
         setToast({ message: 'Item marked as resolved successfully!', type: 'success' });
         fetchItemDetail();
@@ -96,15 +96,19 @@ export const ItemDetail = () => {
   const isOwner = user && (user._id === item.reporter?._id || user._id === item.reporter);
   const isAdmin = user && (user.role === 'admin' || user.role === 'ADMIN');
 
-  const getBadgeClass = (statusStr) => {
-    switch (statusStr?.toUpperCase()) {
-      case 'LOST': return 'badge-lost';
-      case 'FOUND': return 'badge-found';
-      case 'CLAIMED': return 'badge-claimed';
-      case 'RESOLVED': return 'badge-resolved';
+  const getBadgeClass = (typeStr, statusStr) => {
+    const normalized = (typeStr || statusStr || '').toLowerCase();
+    switch (normalized) {
+      case 'lost': return 'badge-lost';
+      case 'found': return 'badge-found';
+      case 'claimed': return 'badge-claimed';
+      case 'resolved': return 'badge-resolved';
       default: return 'badge-found';
     }
   };
+
+  const badgeText = ((item.type || item.status || 'Found')).toString();
+  const displayBadgeText = badgeText.charAt(0).toUpperCase() + badgeText.slice(1);
 
   const fullImageUrl = item.imageUrl
     ? (item.imageUrl.startsWith('http') ? item.imageUrl : `${item.imageUrl}`)
@@ -139,7 +143,7 @@ export const ItemDetail = () => {
         {/* Right Info View */}
         <div className="glass-card detail-info-card">
           <div className="detail-header">
-            <span className={`badge ${getBadgeClass(item.status)}`}>{item.status}</span>
+            <span className={`badge ${getBadgeClass(item.type, item.status)}`}>{displayBadgeText}</span>
             <span className="category-pill"><Tag size={14} /> {item.category || 'General'}</span>
           </div>
 
@@ -185,7 +189,7 @@ export const ItemDetail = () => {
                       setShowClaimModal(true);
                     }
                   }}
-                  disabled={item.status === 'RESOLVED' || item.status === 'CLAIMED'}
+                  disabled={item.status === 'resolved' || item.status === 'claimed'}
                 >
                   <ShieldCheck size={18} />
                   <span>Claim Ownership</span>
@@ -210,7 +214,7 @@ export const ItemDetail = () => {
 
             {(isOwner || isAdmin) && (
               <div className="owner-actions-wrap">
-                {item.status !== 'RESOLVED' && (
+                {item.status !== 'resolved' && (
                   <button
                     className="btn btn-success"
                     onClick={handleResolveStatus}

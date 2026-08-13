@@ -5,23 +5,27 @@ import { MapPin, Calendar, Tag, ArrowRight, ImageOff } from 'lucide-react';
 export const ItemCard = ({ item }) => {
   if (!item) return null;
 
-  const { _id, title, status, category, location, date, imageUrl, reporter } = item;
+  const { _id, title, type, status, category, location, date, imageUrl, reporter } = item;
 
-  // Format status badge class
-  const getBadgeClass = (statusStr) => {
-    switch (statusStr?.toUpperCase()) {
-      case 'LOST':
+  const getBadgeClass = (typeStr, statusStr) => {
+    const normalizedType = (typeStr || statusStr || '').toLowerCase();
+
+    switch (normalizedType) {
+      case 'lost':
         return 'badge-lost';
-      case 'FOUND':
+      case 'found':
         return 'badge-found';
-      case 'CLAIMED':
+      case 'claimed':
         return 'badge-claimed';
-      case 'RESOLVED':
+      case 'resolved':
         return 'badge-resolved';
       default:
         return 'badge-found';
     }
   };
+
+  const displayLabel = (typeStr || status || 'Found').toString();
+  const badgeText = displayLabel.charAt(0).toUpperCase() + displayLabel.slice(1);
 
   const formattedDate = date ? new Date(date).toLocaleDateString('en-US', {
     month: 'short',
@@ -46,7 +50,7 @@ export const ItemCard = ({ item }) => {
           </div>
         )}
         <div className="card-status-badge">
-          <span className={`badge ${getBadgeClass(status)}`}>{status}</span>
+          <span className={`badge ${getBadgeClass(type, status)}`}>{badgeText}</span>
         </div>
       </div>
 

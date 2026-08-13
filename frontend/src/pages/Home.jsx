@@ -19,16 +19,16 @@ export const Home = () => {
           const items = res.data.items || res.data;
           setRecentItems(Array.isArray(items) ? items : []);
 
-          // Calculate basic stats summary
-          const lost = items.filter(i => i.status === 'LOST').length;
-          const found = items.filter(i => i.status === 'FOUND').length;
-          const resolved = items.filter(i => i.status === 'RESOLVED' || i.status === 'CLAIMED').length;
+          // Calculate basic stats summary from the actual backend fields
+          const lost = items.filter(i => i.type === 'lost').length;
+          const found = items.filter(i => i.type === 'found').length;
+          const resolved = items.filter(i => i.status === 'resolved' || i.status === 'claimed').length;
 
           setStats({
-            totalItems: res.data.pagination?.totalItems || items.length,
-            lostCount: lost || 12,
-            foundCount: found || 18,
-            resolvedCount: resolved || 25,
+            totalItems: res.data.pagination?.total || items.length,
+            lostCount: lost,
+            foundCount: found,
+            resolvedCount: resolved,
           });
         }
       } catch (err) {

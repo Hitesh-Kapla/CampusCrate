@@ -9,7 +9,7 @@ export const ItemsFeed = () => {
 
   // Filters state initialized from URL query params
   const [search, setSearch] = useState(searchParams.get('search') || '');
-  const [status, setStatus] = useState(searchParams.get('status') || '');
+  const [type, setType] = useState(searchParams.get('type') || '');
   const [category, setCategory] = useState(searchParams.get('category') || '');
   const [location, setLocation] = useState(searchParams.get('location') || '');
 
@@ -22,7 +22,7 @@ export const ItemsFeed = () => {
     try {
       const params = { page, limit: 12 };
       if (search) params.search = search;
-      if (status) params.status = status;
+      if (type) params.type = type;
       if (category) params.category = category;
       if (location) params.location = location;
 
@@ -48,7 +48,7 @@ export const ItemsFeed = () => {
     e.preventDefault();
     const newParams = {};
     if (search) newParams.search = search;
-    if (status) newParams.status = status;
+    if (type) newParams.type = type;
     if (category) newParams.category = category;
     if (location) newParams.location = location;
     setSearchParams(newParams);
@@ -56,7 +56,7 @@ export const ItemsFeed = () => {
 
   const handleReset = () => {
     setSearch('');
-    setStatus('');
+    setType('');
     setCategory('');
     setLocation('');
     setSearchParams({});
@@ -86,14 +86,12 @@ export const ItemsFeed = () => {
           <div className="filter-select-wrap">
             <select
               className="form-select"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              value={type}
+              onChange={(e) => setType(e.target.value)}
             >
-              <option value="">All Statuses</option>
-              <option value="LOST">LOST</option>
-              <option value="FOUND">FOUND</option>
-              <option value="CLAIMED">CLAIMED</option>
-              <option value="RESOLVED">RESOLVED</option>
+              <option value="">All Types</option>
+              <option value="lost">Lost</option>
+              <option value="found">Found</option>
             </select>
           </div>
 

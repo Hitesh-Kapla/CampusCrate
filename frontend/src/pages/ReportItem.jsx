@@ -9,7 +9,7 @@ export const ReportItem = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [status, setStatus] = useState('LOST');
+  const [type, setType] = useState('lost');
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('electronics');
   const [location, setLocation] = useState('');
@@ -50,7 +50,7 @@ export const ReportItem = () => {
       if (imageFile) {
         const formData = new FormData();
         formData.append('title', title);
-        formData.append('status', status);
+        formData.append('type', type);
         formData.append('category', category);
         formData.append('location', location);
         formData.append('date', date);
@@ -62,7 +62,7 @@ export const ReportItem = () => {
         // Standard JSON payload
         res = await api.items.create({
           title,
-          status,
+          type,
           category,
           location,
           date,
@@ -107,15 +107,15 @@ export const ReportItem = () => {
         <div className="status-tabs">
           <button
             type="button"
-            className={`tab-btn ${status === 'LOST' ? 'active tab-lost' : ''}`}
-            onClick={() => setStatus('LOST')}
+            className={`tab-btn ${type === 'lost' ? 'active tab-lost' : ''}`}
+            onClick={() => setType('lost')}
           >
             Report Lost Item
           </button>
           <button
             type="button"
-            className={`tab-btn ${status === 'FOUND' ? 'active tab-found' : ''}`}
-            onClick={() => setStatus('FOUND')}
+            className={`tab-btn ${type === 'found' ? 'active tab-found' : ''}`}
+            onClick={() => setType('found')}
           >
             Report Found Item
           </button>
@@ -229,7 +229,7 @@ export const ReportItem = () => {
               ) : (
                 <>
                   <PlusCircle size={20} />
-                  <span>Publish {status} Item</span>
+                  <span>Publish {type === 'lost' ? 'Lost' : 'Found'} Item</span>
                 </>
               )}
             </button>
