@@ -24,7 +24,7 @@ export const ItemCard = ({ item }) => {
     }
   };
 
-  const displayLabel = (typeStr || status || 'Found').toString();
+  const displayLabel = (type || status || 'Found').toString();
   const badgeText = displayLabel.charAt(0).toUpperCase() + displayLabel.slice(1);
 
   const formattedDate = date ? new Date(date).toLocaleDateString('en-US', {
