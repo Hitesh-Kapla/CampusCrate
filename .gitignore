@@ -1,0 +1,34 @@
+# Root workspace
+node_modules/
+**/node_modules/
+
+# Builds / generated assets
+**/dist/
+**/build/
+**/.vite/
+
+# Logs
+*.log
+**/*.log
+
+# Environment files (never commit real secrets)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local project runtime data
+backend/src/uploads/*
+!backend/src/uploads/.gitkeep
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Coverage / caches
+coverage/
+.cache/
